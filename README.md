@@ -2,7 +2,7 @@
 
 <div align="center">
 <a href="">
-<img src="./public/porfolio.webp">
+<img src="./public/portfolio.webp">
 </a>
 <p></p>
 </div>
