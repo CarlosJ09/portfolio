@@ -1,7 +1,12 @@
 ---
 import GitHub from "./icons/GitHub.astro";
 import NextJS from "./icons/NextJS.astro";
+import React from "./icons/React.astro";
+import Vue from "./icons/Vue.astro";
 import Tailwind from "./icons/Tailwind.astro";
+import Python from "./icons/Python.astro";
+import Django from "./icons/Django.astro";
+import Docker from "./icons/Docker.astro";
 import Link from "./icons/Link.astro";
 import LinkButton from "./LinkButton.astro";
 
@@ -16,24 +21,68 @@ const TAGS = {
     class: "bg-[#003159] text-white",
     icon: Tailwind,
   },
+  PYTHON: {
+    name: "Python",
+    class: " bg-[#003159] text-white",
+    icon: Python,
+  },
+  DJANGO: {
+    name: "Django",
+    class: "bg-green-800 text-white",
+    icon: Django,
+  },
+  REACT: {
+    name: "React",
+    class: "bg-cyan-800 text-white",
+    icon: React,
+  },
+  VUE: {
+    name: "Vue",
+    class: "bg-green-800 text-white",
+    icon: Vue,
+  },
+  DOCKER: {
+    name: "Docker",
+    class: "bg-blue-800 text-white",
+    icon: Docker,
+  },
 };
+
 const PROJECTS = [
   {
-    title: "Web Dominicana Compañia de Seguros",
+    title: "Dominicana, Insurance Company Website",
     description:
-      "Sitio web principal de la compañia. Creado desde cero con Next.js, React y Tailwind CSS.",
+      "Main website of the insurance company. Built from scratch with Next.js, React, and Tailwind CSS.",
     link: "https://dominicanadeseguros.com/site",
-    image: "",
+    image: "/projects/dominicana.png",
     tags: [TAGS.NEXT, TAGS.TAILWIND],
+  },
+  {
+    title: "Rapidtest",
+    description:
+      "An online platform for creating and taking tests in programming, literature, math, and history. Built with Django (backend) and React (frontend), it features user authentication, role-based access, test management, and real-time scoring.",
+    link: "https://rapidtest.netlify.app/auth/sign-up",
+    github: "https://github.com/CarlosJ09/rapidtest",
+    image: "/projects/rapidtest.png",
+    tags: [TAGS.PYTHON, TAGS.DJANGO, TAGS.REACT, TAGS.TAILWIND],
   },
   {
     title: "MotorHub - Dealer Web",
     description:
-      "Web de dealer con sistema administrativo. Creado con Vue3, Tailwind CSS y Laravel",
-    link: "",
+      "A dealership website with an integrated management system. Built with Vue 3, Tailwind CSS, and Laravel.",
+    link: "https://motorhubrd.com/",
     github: "",
-    image: "",
-    tags: [TAGS.NEXT, TAGS.TAILWIND],
+    image: "/projects/motorhub.png",
+    tags: [TAGS.VUE, TAGS.TAILWIND],
+  },
+  {
+    title: "Object Classification",
+    description:
+      "Full-Stack application designed to classify objects in images. The project is structured with a FastAPI backend and a React frontend, using TypeScript and TailwindCSS for styling. Docker Compose is used for easy setup and management of the application’s services.",
+    link: "",
+    github: "https://github.com/CarlosJ09/object_classification",
+    image: "/projects/objclassification.png",
+    tags: [TAGS.PYTHON, TAGS.DOCKER, TAGS.REACT, TAGS.TAILWIND],
   },
 ];
 ---
@@ -46,7 +95,7 @@ const PROJECTS = [
           <div class="relative flex flex-col items-center col-span-6 row-span-5 gap-8 transition duration-500 ease-in-out transform shadow-xl overflow-clip rounded-xl sm:rounded-xl md:group-hover:-translate-y-1 md:group-hover:shadow-2xl lg:border lg:border-gray-800 lg:hover:border-gray-700 lg:hover:bg-gray-800/50">
             <img
               alt="Imagen de proyecto"
-              class="object-cover object-top w-full h-56 transition duration-500 sm:h-full md:scale-110 md:group-hover:scale-105"
+              class="object-cover object-top w-full h-56 min-h-56 transition duration-500 sm:h-full md:scale-110 md:group-hover:scale-105"
               loading="lazy"
               src={image}
             />
@@ -59,7 +108,7 @@ const PROJECTS = [
             <ul class="flex flex-row mb-2 gap-x-2">
               {tags.map((tag) => (
                 <li>
-                  <span class={`flex gap-x-2 rounded-full text-xs ${tag.class} py-1 px-2 `}>
+                  <span class={`flex gap-x-2 rounded-full text-xs ${tag.class} py-1 px-3`}>
                     <tag.icon class="size-4" />
                     {tag.name}
                   </span>
@@ -67,7 +116,7 @@ const PROJECTS = [
               ))}
             </ul>
 
-            <div class="mt-2 text-gray-700 dark:text-gray-400">{description}</div>
+            <div class="mt-2 text-gray-700 dark:text-gray-400 text-justify">{description}</div>
             <footer class="flex items-end justify-start mt-4 gap-x-4">
               {github && (
                 <LinkButton href={github}>
