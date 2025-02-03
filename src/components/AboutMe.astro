@@ -1,5 +1,15 @@
 ---
-const imageAlt = "Carlos Jiménez";
+const tsImageAlt = "TypeScript";
+const reactImageAlt = "React";
+const pythonImageAlt = "Python";
+const nodejsImageAlt = "Node.js";
+
+const programmingLangs = [
+  { src: "languages/typescript.png", alt: "TypeScript" },
+  { src: "languages/react.png", alt: "React" },
+  { src: "languages/python.png", alt: "Python" },
+  { src: "languages/nodejs.png", alt: "Node.js" },
+];
 ---
 
 <article
@@ -25,5 +35,15 @@ const imageAlt = "Carlos Jiménez";
     </p>
   </div>
 
-  <img src="/typescript.png" alt={imageAlt} class="lg:mb-10 w-32 h-32 md:w-48 md:h-48" />
+  <div class="grid grid-cols-2 gap-8 w-40 md:w-96 md:mb-10">
+    {
+      programmingLangs.map((lang) => (
+        <img
+          class="transition-all duration-300 hover:scale-110 hover:rotate-6 shadow-md"
+          src={lang.src}
+          alt={lang.alt}
+        />
+      ))
+    }
+  </div>
 </article>
