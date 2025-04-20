@@ -1,0 +1,114 @@
+---
+const skillCategories = [
+  {
+    title: "Frontend",
+    icon: "💻",
+    skills: [
+      { name: "HTML" },
+      { name: "CSS" },
+      { name: "JavaScript" },
+      { name: "React" },
+      { name: "React Native" },
+      { name: "NextJS" },
+      { name: "VueJS" },
+      { name: "Tailwind" },
+      { name: "Bootstrap" },
+    ],
+  },
+  {
+    title: "Backend",
+    icon: "⚙️",
+    skills: [
+      { name: "Java" },
+      { name: "Spring Boot" },
+      { name: "Python" },
+      { name: "FastAPI" },
+      { name: "Django" },
+      { name: "NodeJS" },
+    ],
+  },
+  {
+    title: "Tests",
+    icon: "🧪",
+    skills: [
+      { name: "Jest" },
+      { name: "Vitest" },
+      { name: "Supertest" },
+      { name: "JUnit" },
+      { name: "Spring Test" },
+    ],
+  },
+  {
+    title: "Databases",
+    icon: "🗄️",
+    skills: [
+      { name: "Oracle Database" },
+      { name: "PL/SQL" },
+      { name: "MySQL" },
+      { name: "PostgreSQL" },
+      { name: "MongoDB" },
+      { name: "Pinecone" },
+    ],
+  },
+  {
+    title: "Tools",
+    icon: "🛠️",
+    skills: [
+      { name: "AWS" },
+      { name: "Git" },
+      { name: "GitHub" },
+      { name: "GitHub Actions" },
+      { name: "Jira" },
+      { name: "Bitbucket" },
+      { name: "Bitbucket Pipelines" },
+      { name: "Jupyter Notebook" },
+    ],
+  },
+  {
+    title: "Languages",
+    icon: "🌐",
+    skills: [{ name: "Spanish (Native)" }, { name: "English (Upper Intermediate)" }],
+  },
+];
+---
+
+<section class="py-8">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {
+      skillCategories.map((category) => (
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 dark:border-gray-700">
+          <div class="flex items-center mb-6">
+            <span class="text-3xl mr-3">{category.icon}</span>
+            <h3 class="text-xl font-bold text-yellow-500 dark:text-yellow-100">{category.title}</h3>
+          </div>
+          <div class="space-y-4">
+            {category.skills.map((skill) => (
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-gray-700 dark:text-gray-300 font-medium">{skill.name}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  /* Add a subtle animation to the progress bars when they come into view */
+  @keyframes progressAnimation {
+    from {
+      width: 0;
+    }
+    to {
+      width: var(--target-width);
+    }
+  }
+
+  .bg-yellow-500,
+  .bg-yellow-100 {
+    animation: progressAnimation 1.5s ease-out forwards;
+  }
+</style>
