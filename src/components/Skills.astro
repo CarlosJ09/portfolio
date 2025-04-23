@@ -25,6 +25,7 @@ const skillCategories = [
       { name: "FastAPI" },
       { name: "Django" },
       { name: "NodeJS" },
+      { name: "ExpressJS" },
     ],
   },
   {
@@ -51,7 +52,7 @@ const skillCategories = [
     ],
   },
   {
-    title: "Tools",
+    title: "Tools & Platforms",
     icon: "🛠️",
     skills: [
       { name: "AWS" },
@@ -79,7 +80,9 @@ const skillCategories = [
         <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 dark:border-gray-700">
           <div class="flex items-center mb-6">
             <span class="text-3xl mr-3">{category.icon}</span>
-            <h3 class="text-xl font-bold text-emerald-500 dark:text-emerald-100">{category.title}</h3>
+            <h3 class="text-xl font-bold text-emerald-500 dark:text-emerald-100">
+              {category.title}
+            </h3>
           </div>
           <div class="space-y-4">
             {category.skills.map((skill) => (
