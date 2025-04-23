@@ -4,93 +4,70 @@ const skillCategories = [
     title: "Frontend",
     icon: "💻",
     skills: [
-      { name: "HTML" },
-      { name: "CSS" },
-      { name: "JavaScript" },
-      { name: "React" },
-      { name: "React Native" },
-      { name: "NextJS" },
-      { name: "VueJS" },
-      { name: "Tailwind" },
-      { name: "Bootstrap" },
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "React",
+      "React Native",
+      "NextJS",
+      "VueJS",
+      "Tailwind",
+      "Bootstrap",
     ],
   },
   {
     title: "Backend",
     icon: "⚙️",
-    skills: [
-      { name: "Java" },
-      { name: "Spring Boot" },
-      { name: "Python" },
-      { name: "FastAPI" },
-      { name: "Django" },
-      { name: "NodeJS" },
-      { name: "ExpressJS" },
-    ],
+    skills: ["Java", "Spring Boot", "Python", "FastAPI", "Django", "NodeJS", "ExpressJS"],
   },
   {
     title: "Tests",
     icon: "🧪",
-    skills: [
-      { name: "Jest" },
-      { name: "Vitest" },
-      { name: "Supertest" },
-      { name: "JUnit" },
-      { name: "Spring Test" },
-    ],
+    skills: ["Jest", "Vitest", "Supertest", "JUnit", "Spring Test"],
   },
   {
     title: "Databases",
     icon: "🗄️",
-    skills: [
-      { name: "Oracle Database" },
-      { name: "PL/SQL" },
-      { name: "MySQL" },
-      { name: "PostgreSQL" },
-      { name: "MongoDB" },
-      { name: "Pinecone" },
-    ],
+    skills: ["Oracle Database", "PL/SQL", "MySQL", "PostgreSQL", "MongoDB", "Pinecone"],
   },
   {
     title: "Tools & Platforms",
     icon: "🛠️",
     skills: [
-      { name: "AWS" },
-      { name: "Git" },
-      { name: "GitHub" },
-      { name: "GitHub Actions" },
-      { name: "Jira" },
-      { name: "Bitbucket" },
-      { name: "Bitbucket Pipelines" },
-      { name: "Jupyter Notebook" },
+      "AWS",
+      "Git",
+      "GitHub",
+      "GitHub Actions",
+      "Jira",
+      "Bitbucket",
+      "Bitbucket Pipelines",
+      "Jupyter Notebook",
     ],
   },
   {
     title: "Languages",
     icon: "🌐",
-    skills: [{ name: "Spanish (Native)" }, { name: "English (Professional Proficiency)" }],
+    skills: ["Spanish (Native)", "English (Professional Proficiency)"],
   },
 ];
 ---
 
 <section class="py-8">
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+  <div class="space-y-8">
     {
       skillCategories.map((category) => (
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 dark:border-gray-700">
-          <div class="flex items-center mb-6">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700">
+          <div class="flex items-center mb-4">
             <span class="text-3xl mr-3">{category.icon}</span>
             <h3 class="text-xl font-bold text-emerald-500 dark:text-emerald-100">
               {category.title}
             </h3>
           </div>
-          <div class="space-y-4">
+          <div class="flex flex-wrap gap-2">
             {category.skills.map((skill) => (
-              <div>
-                <div class="flex justify-between mb-1">
-                  <span class="text-gray-700 dark:text-gray-300 font-medium">{skill.name}</span>
-                </div>
-              </div>
+              <span class="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full">
+                {skill}
+              </span>
             ))}
           </div>
         </div>
