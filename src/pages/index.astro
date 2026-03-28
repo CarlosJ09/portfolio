@@ -5,6 +5,8 @@ import AboutMe from "@/components/AboutMe.astro";
 import Briefcase from "@/components/icons/Briefcase.astro";
 import CodeIcon from "@/components/icons/Code.astro";
 import Experience from "@/components/Experience.astro";
+import Education from "@/components/Education.astro";
+import GraduationCap from "@/components/icons/GraduationCap.astro";
 import ProfileCheck from "@/components/icons/ProfileCheck.astro";
 import Projects from "@/components/Projects.astro";
 import SectionContainer from "@/components/SectionContainer.astro";
@@ -16,12 +18,12 @@ import Skills from "@/components/Skills.astro";
   title="Carlos Jiménez Portfolio"
   description="Software Developer with 3+ years of experience."
 >
-  <main class="w-full overflow-x-hidden">
+  <main class="w-full overflow-x-clip">
     <SectionContainer class="py-16 md:py-36">
       <Hero />
     </SectionContainer>
   </main>
-  <div class="space-y-24 w-full overflow-x-hidden">
+  <div class="space-y-24 w-full overflow-x-clip">
     <SectionContainer id="experience">
       <h2
         class="flex items-center mb-6 text-3xl font-semibold gap-x-3 text-black/80 dark:text-white"
@@ -50,6 +52,16 @@ import Skills from "@/components/Skills.astro";
         Skills
       </h2>
       <Skills />
+    </SectionContainer>
+
+    <SectionContainer id="education">
+      <h2
+        class="flex items-center mb-6 text-3xl font-semibold gap-x-3 text-black/80 dark:text-white"
+      >
+        <GraduationCap class="size-8" />
+        Education
+      </h2>
+      <Education />
     </SectionContainer>
 
     <SectionContainer id="about-me">

@@ -28,7 +28,7 @@ const personalImageAlt = "Carlos Jiménez";
   <p
     class="mt-6 text-xl text-gray-800 dark:[&>strong]:text-emerald-200 [&>strong]:text-emerald-500 [&>strong]:font-semibold dark:text-gray-300"
   >
-    +3 years of experience. <strong>Systems Engineer and Software Developer</strong> from Santo Domingo,
+    +<span id="years-exp">4</span> years of experience. <strong>Systems Engineer and Software Developer</strong> from Santo Domingo,
     DR 🇩🇴. Specialized in Web Development.
   </p>
   <nav class="flex flex-wrap gap-4 mt-8">
@@ -110,5 +110,9 @@ const personalImageAlt = "Carlos Jiménez";
 
   document.addEventListener("astro:page-load", () => {
     setTimeout(typeText, typingDelay);
+    const yearsSpan = document.getElementById("years-exp");
+    if (yearsSpan) {
+      yearsSpan.textContent = (new Date().getFullYear() - 2022).toString();
+    }
   });
 </script>

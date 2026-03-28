@@ -9,7 +9,7 @@ const currentYear = new Date().getFullYear();
     class="rounded-lg w-full max-w-screen-xl mx-auto md:flex md:items-center md:justify-between py-4"
   >
     <span class="text-sm sm:text-center text-zinc-800/90 dark:text-zinc-200/90"
-      >© {currentYear}
+      >© <span id="footer-year">{currentYear}</span>
       <a href="https://github.com/CarlosJ09" class="hover:underline">CarlosJ09</a>. All rights
       reserved.
     </span>
@@ -21,3 +21,7 @@ const currentYear = new Date().getFullYear();
     </ul>
   </div>
 </footer>
+
+<script>
+  document.getElementById("footer-year")!.textContent = new Date().getFullYear().toString();
+</script>

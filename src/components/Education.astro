@@ -1,0 +1,23 @@
+---
+import EducationItem from "./EducationItem.astro";
+
+const EDUCATION = [
+  {
+    institution: "Instituto Tecnológico de Santo Domingo (INTEC)",
+    degree: "Bachelor's Degree in Systems Engineering",
+    date: "2021 – 2025",
+    description:
+      "Studied software engineering fundamentals, algorithms, data structures, databases, computer networks, and software development methodologies. Gained solid theoretical and practical foundations in designing and building scalable software systems.",
+  },
+];
+---
+
+<ol class="relative mt-16">
+  {
+    EDUCATION.map((edu) => (
+      <li>
+        <EducationItem {...edu} />
+      </li>
+    ))
+  }
+</ol>
