@@ -12,11 +12,12 @@ import Projects from "@/components/Projects.astro";
 import SectionContainer from "@/components/SectionContainer.astro";
 import Hero from "@/components/Hero.astro";
 import Skills from "@/components/Skills.astro";
+import { getYearsOfExperience } from "@/consts";
 ---
 
 <Layout
   title="Carlos Jiménez Portfolio"
-  description="Software Developer with 3+ years of experience."
+  description={`Software Developer with ${getYearsOfExperience()}+ years of experience.`}
 >
   <main class="w-full overflow-x-clip">
     <SectionContainer class="py-16 md:py-36">

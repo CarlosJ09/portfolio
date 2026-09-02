@@ -1,4 +1,6 @@
 ---
+import { getYearsOfExperience } from "@/consts";
+
 const programmingLangs = [
   { src: "languages/typescript.png", alt: "TypeScript" },
   { src: "languages/react.png", alt: "React" },
@@ -15,8 +17,9 @@ const programmingLangs = [
   >
     <p>
       My name is Carlos Jiménez, a <strong>Systems Engineer</strong> graduated from the Instituto
-      Tecnológico de Santo Domingo (INTEC), with over <strong>3 years of professional experience</strong>
-      building scalable and high-performance web applications across the full stack.
+      Tecnológico de Santo Domingo (INTEC), with over <strong
+        ><span id="years-exp-about">{getYearsOfExperience()}</span> years of professional experience</strong
+      > building scalable and high-performance web applications across the full stack.
     </p>
 
     <p>
@@ -45,3 +48,14 @@ const programmingLangs = [
     }
   </div>
 </article>
+
+<script>
+  import { getYearsOfExperience } from "@/consts";
+
+  document.addEventListener("astro:page-load", () => {
+    const yearsSpan = document.getElementById("years-exp-about");
+    if (yearsSpan) {
+      yearsSpan.textContent = getYearsOfExperience().toString();
+    }
+  });
+</script>
