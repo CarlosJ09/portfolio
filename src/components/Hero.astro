@@ -1,4 +1,8 @@
 ---
+import Button from "@/components/Button.astro";
+import GitHubIcon from "@/components/icons/GitHub.astro";
+import LinkedInIcon from "@/components/icons/LinkedIn.astro";
+import MailIcon from "@/components/icons/Mail.astro";
 import { getYearsOfExperience, LINKS } from "@/consts";
 ---
 
@@ -15,39 +19,49 @@ import { getYearsOfExperience, LINKS } from "@/consts";
       href={LINKS.linkedin}
       target="_blank"
       rel="noopener noreferrer"
-      class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-muted hover:text-accent"
+      class="inline-flex items-center gap-2.5 rounded-full border border-rule px-3.5 py-1.5 font-mono text-xs uppercase tracking-[0.14em] text-muted transition-colors duration-200 hover:border-accent hover:text-accent"
     >
-      <span aria-hidden="true" class="size-1.5 rounded-full bg-accent"></span>
+      <span aria-hidden="true" class="relative flex size-2">
+        <span
+          class="absolute inline-flex size-full rounded-full bg-accent opacity-60 motion-safe:animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite]"
+        ></span>
+        <span class="relative inline-flex size-2 rounded-full bg-accent"></span>
+      </span>
       Open to work
     </a>
   </div>
 
   <h1 class="text-5xl sm:text-6xl font-semibold tracking-tight leading-[1.05]">Carlos Jiménez</h1>
 
-  <p class="mt-5 text-2xl sm:text-[1.75rem] leading-snug text-muted">
-    Full-stack engineer who builds AI features with LLMs.
+  <p class="mt-5 text-2xl sm:text-[1.75rem] leading-snug text-muted text-pretty">
+    Full-stack engineer. I build product features end to end, from the UI to production.
   </p>
 
   <p class="mt-8 text-lg text-pretty">
-    <span id="years-exp">{getYearsOfExperience()}</span>+ years shipping TypeScript across the
-    stack: Vue 3 and React, NestJS, AWS. I put LLMs where they're good at reading, and I write the
-    code that decides. When the system isn't sure, I'd rather it say <em>needs review</em> than
-    guess.
+    <span id="years-exp">{getYearsOfExperience()}</span>+ years shipping production software with
+    TypeScript: Vue 3 and React on the front, Node.js and NestJS behind them, and the cloud or
+    servers they run on. Lately that includes AI features on Amazon Bedrock. I also onboard and
+    mentor the engineers who join my projects.
   </p>
 
   <p class="mt-6 font-mono text-xs text-muted">
     Currently at Thryv · Based in Santo Domingo, Dominican Republic
   </p>
 
-  <ul class="mt-10 flex flex-wrap gap-x-6 gap-y-2 font-mono text-sm">
-    <li><a class="link" href={LINKS.email}>Email</a></li>
-    <li>
-      <a class="link" href={LINKS.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-    </li>
-    <li>
-      <a class="link" href={LINKS.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-    </li>
-  </ul>
+  <div class="mt-10 flex flex-wrap gap-3">
+    <Button href={LINKS.email} variant="primary">
+      <MailIcon class="size-4" />
+      Email me
+    </Button>
+    <Button href={LINKS.linkedin} external>
+      <LinkedInIcon class="size-4" />
+      LinkedIn
+    </Button>
+    <Button href={LINKS.github} external>
+      <GitHubIcon class="size-4" />
+      GitHub
+    </Button>
+  </div>
 </div>
 
 <script>

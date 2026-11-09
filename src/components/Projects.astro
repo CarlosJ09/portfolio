@@ -1,4 +1,7 @@
 ---
+import Button from "./Button.astro";
+import GitHubIcon from "./icons/GitHub.astro";
+
 // Every number here must come verbatim from the vendor-vetting README or eval-results/.
 const FEATURED = {
   title: "vendor-vetting",
@@ -72,14 +75,13 @@ const OTHER = [
       }
     </dl>
 
-    <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 font-mono text-sm">
-      <li>
-        <a class="link" href={FEATURED.github} target="_blank" rel="noopener noreferrer">Code ↗</a>
-      </li>
-      <li>
-        <a class="link" href={FEATURED.link} target="_blank" rel="noopener noreferrer">Live demo ↗</a>
-      </li>
-    </ul>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <Button href={FEATURED.link} variant="primary" external>Live demo</Button>
+      <Button href={FEATURED.github} external>
+        <GitHubIcon class="size-4" />
+        Code
+      </Button>
+    </div>
   </article>
 
   {
@@ -87,11 +89,9 @@ const OTHER = [
       <article>
         <h3 class="text-2xl font-semibold tracking-tight">{title}</h3>
         <p class="mt-3 text-pretty">{description}</p>
-        <p class="mt-4 font-mono text-sm">
-          <a class="link" href={link} target="_blank" rel="noopener noreferrer">
-            Visit site ↗
-          </a>
-        </p>
+        <div class="mt-6">
+          <Button href={link} external>Visit site</Button>
+        </div>
         <figure class="mt-8">
           <img
             alt={imageAlt}

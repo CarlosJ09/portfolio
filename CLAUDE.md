@@ -29,7 +29,11 @@ LLM systems, not a list of logos.
 
 ## 2. Positioning
 
-**Full-Stack Engineer who builds AI features with LLMs.**
+**Full-stack engineer who builds product features end to end, from the UI to production.**
+(Revised with Carlos on 2026-11-09.) AI/LLM work (Bedrock, RAG, vendor-vetting) is one strength,
+**not** his identity: don't center the copy on LLMs or on vendor-vetting. Don't imply he only
+deploys to AWS ("the cloud or servers they run on"). Experience comes before Projects on the home
+page.
 
 What Carlos has said about himself, which the copy must be built from:
 

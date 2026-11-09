@@ -1,0 +1,37 @@
+---
+interface Props {
+  href: string;
+  variant?: "primary" | "secondary";
+  /** Opens in a new tab and shows a ↗ that nudges on hover. */
+  external?: boolean;
+}
+
+const { href, variant = "secondary", external = false } = Astro.props;
+
+const variants = {
+  primary: "border-ink bg-ink text-paper hover:border-accent hover:bg-accent",
+  secondary: "border-rule text-ink hover:border-ink hover:bg-ink/[0.04]",
+};
+---
+
+<a
+  href={href}
+  target={external ? "_blank" : undefined}
+  rel={external ? "noopener noreferrer" : undefined}
+  class:list={[
+    "group inline-flex items-center gap-2 border px-4 py-2 font-mono text-sm transition-colors duration-200",
+    variants[variant],
+  ]}
+>
+  <slot />
+  {
+    external && (
+      <span
+        aria-hidden="true"
+        class="transition-transform duration-200 motion-safe:group-hover:-translate-y-0.5 motion-safe:group-hover:translate-x-0.5"
+      >
+        ↗
+      </span>
+    )
+  }
+</a>
