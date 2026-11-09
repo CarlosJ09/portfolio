@@ -1,0 +1,507 @@
+---
+// Case study. Every number on this page must come verbatim from the vendor-vetting README or
+// eval-results/2026-08-19-0251-qwen2.5-7b.md. Never call the project "agentic": it's a staged pipeline.
+import Layout from "@/layouts/Layout.astro";
+import Button from "@/components/Button.astro";
+import GitHubIcon from "@/components/icons/GitHub.astro";
+
+const REPO = "https://github.com/CarlosJ09/vendor-vetting";
+const DEMO = "https://vendor-vetting.vercel.app/";
+const RESULTS = `${REPO}/blob/main/eval-results/2026-08-19-0251-qwen2.5-7b.md`;
+
+const TLDR = [
+  "<strong>The model extracts. The code validates.</strong> A test fails the build if decision words appear in a prompt.",
+  "<strong>0 of 16</strong> defective dossiers were reported as <code>pass</code>, the one metric that matters.",
+  "Self-reported confidence was <strong>1.00 on all 761 fields</strong>, including the one wrong extraction. It carried no information.",
+  "The only extraction error looked like a model failure. It was <strong>my own text-reconstruction bug</strong>.",
+  "Runs fully local on an <strong>8 GB laptop GPU</strong>. The demo is Next.js on Vercel + Supabase, with TLS that fails closed.",
+];
+
+const STAGES = [
+  { name: "ingest", note: "Magic bytes, not filenames. SHA-256 and duplicate detection." },
+  { name: "render", note: "PDFs become a text layer plus per-fragment geometry. Images stay images: no deskew, no denoise." },
+  { name: "classify", model: true, note: "One of 4 document types, or <code>unknown</code>." },
+  { name: "extract", model: true, note: "Per-type schema, structured output: <code>{ value, confidence, page }</code>." },
+  { name: "normalize", note: "Dates parsed, identifiers stripped. Deterministic." },
+  { name: "locate", note: "Find each value in the text layer and record its bounding box." },
+  { divider: true },
+  { name: "validate", note: "Check digits, date sanity, freshness, status." },
+  { name: "cross-check", note: "RNC, razón social and representante legal agree across documents." },
+  { name: "dossier", note: "<code>pass</code> · <code>warn</code> · <code>fail</code> · <code>needs_review</code> per requirement, each linked to its evidence." },
+];
+
+const RESULTS_ROWS = [
+  { metric: "Dossier verdicts", value: "40 / 40", detail: "100.0%" },
+  { metric: "Classification", value: "160 / 160", detail: "including 40/40 degraded cédula scans" },
+  { metric: "Extraction", value: "100%", detail: "precision and recall on all 19 fields" },
+  { metric: "Latency per dossier", value: "36.29s", detail: "p50 · p95 50.02s" },
+  { metric: "Tokens per dossier", value: "10,586", detail: "395,003 in · 28,422 out, whole corpus" },
+  { metric: "Measured cost", value: "$0.00", detail: "local inference" },
+];
+---
+
+<Layout
+  title="vendor-vetting: case study · Carlos Jiménez"
+  description="An LLM pipeline that vets supplier documents against the Dominican Republic's procurement registry requirements. The model extracts; tested code decides. Results, architecture and what went wrong."
+>
+  <main class="flex-1">
+    <article class="cs mx-auto w-full max-w-page px-5 sm:px-8 pt-12 sm:pt-20">
+      <a href="/#projects" class="font-mono text-xs text-muted hover:text-accent">← All projects</a>
+
+      <header class="mt-10">
+        <p class="font-mono text-xs uppercase tracking-[0.18em] text-accent">
+          Case study · Personal project
+        </p>
+        <h1 class="mt-3 text-5xl sm:text-6xl font-semibold tracking-tight leading-[1.05]">
+          vendor-vetting
+        </h1>
+        <p class="mt-5 text-2xl leading-snug text-muted text-pretty">
+          An LLM pipeline that vets supplier documents for the Dominican Republic's public
+          procurement registry. The model reads; tested code decides.
+        </p>
+
+        <dl class="mt-8 grid gap-x-8 gap-y-2 font-mono text-xs sm:grid-cols-[6rem_1fr]">
+          <dt class="text-muted">Stack</dt>
+          <dd>Next.js · TypeScript · PostgreSQL + Drizzle · Vitest · Ollama</dd>
+          <dt class="text-muted">Models</dt>
+          <dd>qwen2.5:7b (text) + qwen2.5vl:7b (vision), Q4_K_M</dd>
+          <dt class="text-muted">Status</dt>
+          <dd>Deployed demo · open source</dd>
+        </dl>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <Button href={DEMO} variant="primary" external>Live demo</Button>
+          <Button href={REPO} external>
+            <GitHubIcon class="size-4" />
+            Code
+          </Button>
+        </div>
+      </header>
+
+      <aside class="mt-14 border-y border-rule py-6" aria-labelledby="tldr">
+        <h2 id="tldr" class="!mt-0 font-mono !text-xs uppercase tracking-[0.18em] text-muted !font-normal">
+          In 60 seconds
+        </h2>
+        <ul class="mt-4 space-y-2.5">
+          {TLDR.map((item) => <li class="dash" set:html={item} />)}
+        </ul>
+      </aside>
+
+      <p class="mt-6 font-mono text-xs text-muted text-pretty">
+        Independent project. No affiliation with the DGCP, the DGII, the TSS, or any Dominican state
+        institution. Every document in it is synthetic.
+      </p>
+
+      <!-- 1 -->
+      <h2>The problem</h2>
+      <p>
+        To register as a state supplier in the Dominican Republic, a company submits a folder of
+        certifications: proof it legally exists, proof it is current on its taxes, proof it is
+        current on social security, and the ID of whoever signs on its behalf. Today a person opens
+        each file, reads the dates, checks the identifiers, and compares the company name across all
+        four.
+      </p>
+      <p>
+        It is careful, repetitive work, and the failure that matters is not rejecting a good packet.
+        It is <em>accepting a bad one</em>, because nobody looks again.
+      </p>
+      <p>
+        vendor-vetting takes an unlabeled folder, works out what each file is, extracts the fields,
+        validates them, cross-checks the documents against each other, and produces a dossier with a
+        status per requirement, each linked to the exact page and region that supports it.
+      </p>
+
+      <!-- 2 -->
+      <h2>The one principle</h2>
+      <blockquote class="pull">The model extracts. The code validates.</blockquote>
+      <p>
+        The model's only job is to read a document and report what it says, with a confidence score
+        and a page citation. It is never asked to judge, decide, or reason about a business rule.
+      </p>
+      <div class="grid gap-px bg-rule border border-rule my-8 sm:grid-cols-2">
+        <div class="bg-paper p-5">
+          <p class="!m-0 font-mono text-xs uppercase tracking-[0.14em] text-accent">Asked of the model</p>
+          <p class="!mt-2 !mb-0 italic">"What issue date appears on this document?"</p>
+        </div>
+        <div class="bg-paper p-5">
+          <p class="!m-0 font-mono text-xs uppercase tracking-[0.14em] text-muted">Never asked</p>
+          <p class="!mt-2 !mb-0 italic">"Is this document expired?"</p>
+        </div>
+      </div>
+      <p>
+        Expiry, check digits, status thresholds and cross-document consistency are deterministic
+        code with unit tests. A date arithmetic bug is findable and fixable; a model that decided
+        "expired" for reasons it cannot show you is neither.
+      </p>
+      <p>
+        This is enforced, not just intended: <code>src/models/prompts.test.ts</code> fails the build if
+        the words <em>vencido, vigente, válido, aprobar, rechazar, cumple</em>, a day-count window, or
+        any cross-document comparison appear in a prompt. It has caught me once already, on a prompt
+        where I had written "un acuerdo de pago <strong>vigente</strong>".
+      </p>
+      <h3>Confidence is a third answer, not a threshold</h3>
+      <p>
+        A field extracted below 0.75 confidence is <strong>not</strong> rejected. It goes to a review
+        queue, and the requirement that depends on it reports <code>needs_review</code>, which outranks
+        even <code>fail</code>. An extraction the system doesn't trust can't prove a document is bad
+        any more than it can prove it is good. Auto-rejecting would turn "I couldn't read this" into
+        "this supplier is non-compliant".
+      </p>
+
+      <!-- 3 -->
+      <h2>Architecture</h2>
+      <p>
+        A staged pipeline. Two stages call a model; everything after <code>locate</code> is plain code.
+      </p>
+      <ol class="pipeline" aria-label="Pipeline stages, in order">
+        {
+          STAGES.map((stage) =>
+            stage.divider ? (
+              <li class="divider" aria-label="No model past this line">
+                <span>No model past this line</span>
+              </li>
+            ) : (
+              <li>
+                <span class="name">
+                  {stage.name}
+                  {stage.model && <span class="tag">model</span>}
+                </span>
+                <span class="note" set:html={stage.note} />
+              </li>
+            ),
+          )
+        }
+      </ol>
+      <p>
+        Every stage writes its duration, tokens and output to <code>stage_runs</code>, so a stage can
+        be re-run without repeating the model calls before it, and so the latency and cost below are
+        measured rather than estimated.
+      </p>
+      <p>
+        The model provider is an interface with exactly two methods, <code>classify</code> and
+        <code>extract</code>. Nothing above it knows which model answered, which is what makes the
+        eval portable across backends.
+      </p>
+      <h3>Deployed, and TLS fails closed</h3>
+      <p>
+        All model work happens at ingest time, so the deployed app is stateless: Next.js on Vercel
+        reading Supabase Postgres, with no Ollama in production. Supabase signs its certificates with
+        a private root that Node doesn't trust, and the fix the internet reaches for first is
+        <code>rejectUnauthorized: false</code>. That isn't a smaller version of TLS; it's TLS with the
+        part that stops an impostor removed. Here a remote database without a CA certificate fails
+        loudly instead of silently downgrading.
+      </p>
+
+      <!-- 4 -->
+      <h2>Results</h2>
+      <p>
+        qwen2.5:7b (text) and qwen2.5vl:7b (vision), both Q4_K_M, via Ollama on a local RTX 4070
+        Laptop (8 GB). 40 synthetic dossiers, 160 documents.
+      </p>
+      <div class="my-10 border-l-2 border-accent pl-6">
+        <p class="!m-0 font-mono text-5xl sm:text-6xl tabular-nums text-accent">0 / 16</p>
+        <p class="!mt-3 !mb-0 text-pretty">
+          defective dossiers reported as <code>pass</code>. A defective dossier reported clean tells a
+          reviewer there is nothing to look at, so this is reported on its own and never averaged
+          into anything.
+        </p>
+      </div>
+      <table class="results">
+        <caption class="sr-only">Eval results</caption>
+        <tbody>
+          {
+            RESULTS_ROWS.map((row) => (
+              <tr>
+                <th scope="row">{row.metric}</th>
+                <td>
+                  <span class="value">{row.value}</span>
+                  <span class="detail">{row.detail}</span>
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+      <p class="font-mono text-xs text-muted">
+        Source: <a class="link" href={RESULTS} target="_blank" rel="noopener noreferrer"
+          >eval-results/2026-08-19-0251-qwen2.5-7b.md ↗</a
+        >
+      </p>
+
+      <h3>How to read these numbers</h3>
+      <blockquote class="quote">
+        <p>
+          A 100% on a corpus I generated myself is not evidence the system reads real documents. It
+          is evidence of something narrower and still worth having: that the pipeline is correct end
+          to end, and that when a verdict is wrong the fault is unambiguously in extraction rather
+          than in the rules.
+        </p>
+        <p>
+          Expect these numbers to fall on real documents. The eval harness exists so that when they
+          do, the drop is measured instead of discovered by a supplier.
+        </p>
+      </blockquote>
+      <p>
+        I predicted the degraded cédula scans, rotated, noisy and partially cropped, would be where
+        a 7B quantized vision model lost the most ground. I was wrong: it classified 40/40 and
+        extracted all four fields without an error.
+      </p>
+
+      <!-- 5 -->
+      <h2>What went wrong</h2>
+
+      <h3>Self-reported confidence carried no information</h3>
+      <p>
+        Across the full corpus, <strong>761 extracted fields, every single one came back at
+        confidence exactly 1.00</strong>. Minimum 1.00, maximum 1.00, zero variance. The one
+        extraction error the pipeline ever made also came back at 1.00.
+      </p>
+      <p>
+        So the threshold, the review queue and the <code>needs_review</code> status are built,
+        tested and wired end to end, and on this model the signal that drives them is a constant. The
+        queue shows "nothing pending" not because the extractions were verified, but because the
+        model never once expressed a doubt. Asking a model how sure it is returns a number shaped
+        like evidence; here it was decoration.
+      </p>
+      <p>
+        The design already assumed this. Low confidence routes to a human, never to rejection, and
+        no requirement is decided by confidence alone. That's why the verdicts are still 40/40 with a
+        useless confidence signal. The honest alternative, per-token logprobs, isn't usefully exposed
+        by the Ollama chat API.
+      </p>
+
+      <h3>The model got blamed for my bug</h3>
+      <p>
+        An extraction returned <code class="!whitespace-normal">"Empleador Servicios Punta Alta, E.I.R.L."</code>: the field label
+        glued to the value, which then failed the cross-document name check. It looked like a model
+        failure. It was mine. <code>fragmentsToText</code> joined every fragment on a line with a
+        single space, so a ~100pt column gutter and a word space became the same character.
+      </p>
+      <p>
+        Fixed by emitting a tab when the horizontal gap exceeds 2% of the page width. It was the only
+        extraction error in the corpus. Worth saying plainly: my first instinct was to reach for the
+        prompt.
+      </p>
+
+      <h3>The synthetic watermark broke classification</h3>
+      <p>
+        Cédulas first came back as <code>unknown</code>. Asked why, the model pointed at the
+        watermark: <em>"EJEMPLAR SINTETICO - SIN VALIDEZ LEGAL"</em>. The marking the project needs
+        for honesty was making the model reject the document as not-a-document. An instruction that
+        such markings don't determine document type fixed it. The general hazard: safety markings on
+        synthetic eval data can become the thing the model keys on.
+      </p>
+
+      <h3>Losing the GPU was silent</h3>
+      <p>
+        Restarting Docker Desktop broke WSL's GPU passthrough, and Ollama didn't error. It fell back
+        to CPU and kept answering. The vision model stopped finishing inside the 180-second timeout,
+        every scanned cédula failed, and seven dossiers were written as <code>fail</code> for a
+        reason that exists nowhere in the documents.
+      </p>
+      <p>
+        Everything pointed at the model: timeouts, in the extract stage, only on the vision path. The
+        tell was elsewhere: <code>/api/ps</code> reporting the model resident with
+        <code>size_vram: 0</code>. A backend that degrades instead of failing will hand you a
+        plausible wrong story about your own code. The fix was a check, not a code change: warm the
+        vision model and assert it landed in VRAM before a run.
+      </p>
+
+      <!-- 6 -->
+      <h2>What I'd do next</h2>
+      <ul class="space-y-3">
+        <li class="dash">
+          <strong>Measure a hosted model against the same eval.</strong> A model with real logprobs is
+          the first thing to compare, because it could give the confidence signal some meaning. The
+          provider interface makes this a comparison, not a rewrite.
+        </li>
+        <li class="dash">
+          <strong>Run it on real documents.</strong> The synthetic corpus proves the pipeline, not
+          the reading. Real intake brings scanner artifacts, phrasings and layouts I didn't
+          anticipate.
+        </li>
+        <li class="dash">
+          <strong>Evidence regions for scans.</strong> Literal PDF fields are located 522 of 522; scanned
+          cédulas get no bounding box, and the viewer says so rather than drawing a plausible one.
+          Fixing that needs per-word OCR geometry the vision path doesn't produce yet.
+        </li>
+        <li class="dash">
+          <strong>Image preprocessing, only when it earns its place.</strong> No deskew or denoise
+          today, on purpose: each would become an untested pipeline whose effect on the numbers
+          nobody could separate.
+        </li>
+      </ul>
+
+      <!-- 7 -->
+      <h2>Links</h2>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <Button href={DEMO} variant="primary" external>Live demo</Button>
+        <Button href={REPO} external>
+          <GitHubIcon class="size-4" />
+          Code &amp; README
+        </Button>
+        <Button href={RESULTS} external>Full eval report</Button>
+      </div>
+      <p class="font-mono text-xs text-muted text-pretty">
+        The demo runs on a free tier that sleeps when nobody visits. If it shows no data, it's waking
+        up. Everything also reproduces locally with no account anywhere.
+      </p>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  .cs h2 {
+    margin-top: 5rem;
+    margin-bottom: 1.25rem;
+    font-size: 1.875rem;
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+  .cs h3 {
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .cs p {
+    margin-top: 1.1rem;
+    max-width: 42rem;
+    text-wrap: pretty;
+  }
+  .cs :global(strong) {
+    font-weight: 600;
+  }
+
+  .cs :global(.dash) {
+    position: relative;
+    padding-left: 1.25rem;
+  }
+  .cs :global(.dash)::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: rgb(var(--rule));
+  }
+
+  .pull {
+    margin: 2rem 0;
+    border-left: 2px solid rgb(var(--accent));
+    padding-left: 1.5rem;
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    line-height: 1.2;
+    font-style: italic;
+  }
+  .quote {
+    margin: 1.5rem 0;
+    border-left: 2px solid rgb(var(--rule));
+    padding-left: 1.5rem;
+    color: rgb(var(--muted));
+  }
+  .quote p:first-child {
+    margin-top: 0;
+  }
+
+  .pipeline {
+    margin: 2rem 0;
+    border-left: 1px solid rgb(var(--rule));
+  }
+  .pipeline li {
+    position: relative;
+    display: grid;
+    gap: 0.25rem 1.5rem;
+    padding: 0.6rem 0 0.6rem 1.5rem;
+  }
+  .pipeline li::before {
+    content: "";
+    position: absolute;
+    left: -4px;
+    top: 1.15rem;
+    width: 7px;
+    height: 7px;
+    border-radius: 9999px;
+    background: rgb(var(--paper));
+    border: 1px solid rgb(var(--muted));
+  }
+  @media (min-width: 640px) {
+    .pipeline li {
+      grid-template-columns: 9rem 1fr;
+    }
+  }
+  .pipeline .name {
+    font-family: theme("fontFamily.mono");
+    font-size: 0.875rem;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .pipeline .tag {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgb(var(--accent));
+    border: 1px solid rgb(var(--accent) / 0.5);
+    padding: 0 0.35rem;
+  }
+  .pipeline li:has(.tag)::before {
+    background: rgb(var(--accent));
+    border-color: rgb(var(--accent));
+  }
+  .pipeline .note {
+    color: rgb(var(--muted));
+  }
+  .pipeline .divider {
+    display: block;
+    padding: 0.9rem 0 0.9rem 1.5rem;
+  }
+  .pipeline .divider::before {
+    display: none;
+  }
+  .pipeline .divider span {
+    display: block;
+    border-top: 1px dashed rgb(var(--accent));
+    padding-top: 0.4rem;
+    font-family: theme("fontFamily.mono");
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: rgb(var(--accent));
+  }
+
+  .results {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 1px solid rgb(var(--rule));
+  }
+  .results tr {
+    border-bottom: 1px solid rgb(var(--rule));
+  }
+  .results th,
+  .results td {
+    padding: 0.75rem 0;
+    text-align: left;
+    vertical-align: baseline;
+  }
+  .results th {
+    font-weight: 400;
+    color: rgb(var(--muted));
+    padding-right: 1rem;
+  }
+  .results .value {
+    font-family: theme("fontFamily.mono");
+    font-size: 1.05rem;
+    white-space: nowrap;
+    margin-right: 0.75rem;
+  }
+  .results .detail {
+    color: rgb(var(--muted));
+    font-size: 0.95rem;
+  }
+  @media (max-width: 639px) {
+    .results .detail {
+      display: block;
+    }
+  }
+</style>
