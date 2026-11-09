@@ -1,11 +1,32 @@
 ---
-const { class: className, id } = Astro.props
+interface Props {
+  id?: string;
+  /** Shown as the mono label, e.g. "01". */
+  number?: string;
+  title?: string;
+  class?: string;
+}
+
+const { id, number, title, class: className = "" } = Astro.props;
+const headingId = id ? `${id}-heading` : undefined;
 ---
 
 <section
   id={id}
-  data-section={id}
-  class={`section ${className} scroll-m-20 w-full mx-auto container lg:max-w-4xl md:max-w-2xl overflow-x-hidden`}
+  aria-labelledby={title ? headingId : undefined}
+  class:list={["mx-auto w-full max-w-page px-5 sm:px-8 scroll-mt-8", className]}
 >
+  {
+    title && (
+      <h2
+        id={headingId}
+        class="mb-10 flex items-baseline gap-x-3 border-b border-rule pb-3 font-mono text-xs uppercase tracking-[0.18em] text-muted"
+      >
+        {number && <span class="text-accent">{number}</span>}
+        <span aria-hidden="true">—</span>
+        {title}
+      </h2>
+    )
+  }
   <slot />
 </section>

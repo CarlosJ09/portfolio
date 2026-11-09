@@ -3,11 +3,12 @@ import ExperienceItem from "./ExperienceItem.astro";
 
 // Confidentiality: the only client/product names allowed are Thryv, Dominicana Compañía de
 // Seguros, BotPro S.R.L, and SIGEF / Ministerio de Hacienda y Economía. Describe internal Thryv
-// products generically. Never mention the program that finances the SIGEF engagement.
+// products generically. SIGEF: naming the IDB (BID) as funder is approved by Carlos; never mention
+// contract value or any person's name.
 
 const EXPERIENCE = [
   {
-    date: "August 2025 – Present",
+    date: "Aug 2025 – Present",
     location: "Dallas, Texas, USA · Remote",
     title: "Full-Stack Engineer · AI & Cloud",
     company: "Thryv",
@@ -21,12 +22,12 @@ const EXPERIENCE = [
     ],
   },
   {
-    date: "November 2025 – November 2026",
+    date: "Nov 2025 – Nov 2026",
     location: "Santo Domingo, Dominican Republic · Remote",
-    title: "Frontend Consultant (Contract)",
+    title: "IDB Consultant · Frontend Developer (Contract)",
     company: "SIGEF · Ministerio de Hacienda y Economía",
     summary:
-      "The Dominican government's national financial management system. Nuxt 3, Vue 3, TypeScript, PrimeVue, Keycloak.",
+      "Frontend work on the Dominican government's national financial management system, within a financial-transparency program funded by the Inter-American Development Bank (IDB). Nuxt 3, Vue 3, TypeScript, PrimeVue, Keycloak.",
     highlights: [
       "Wrote the pre-refactoring analysis of the frontend service layer: 27 service files, ~222 uses of <code>any</code>, zero test files.",
       "Designed and rolled out a shared composable, <code>useSigefResource</code>, to replace the per-module web-service classes. It's backward compatible, so modules still on the old classes keep working.",
@@ -36,19 +37,19 @@ const EXPERIENCE = [
     ],
   },
   {
-    date: "October 2023 – August 2025",
+    date: "Oct 2023 – Aug 2025",
     location: "Santo Domingo, Dominican Republic · On-site",
     title: "Frontend → Full-Stack Developer",
     company: "Dominicana Compañía de Seguros",
     highlights: [
-      'Built the company\'s main public website from scratch: <a class="underline" href="https://dominicanadeseguros.com/site" target="_blank" rel="noopener">dominicanadeseguros.com</a>. I chose the framework and stack (Next.js, Tailwind), set up the site\'s structure, wrote part of the content, and was responsible for performance and accessibility.',
+      'Built the company\'s main public website from scratch: <a class="link" href="https://dominicanadeseguros.com/site" target="_blank" rel="noopener noreferrer">dominicanadeseguros.com</a>. I chose the framework and stack (Next.js, Tailwind), set up the site\'s structure, wrote part of the content, and was responsible for performance and accessibility.',
       "Built UI for the client-facing insurance portal in React and Redux, improving user engagement by 30%, and wrote tests with Vitest and Jest.",
       "Adapted web applications for mobile with React Native and Expo.",
       "Moved to full-stack in February 2025, building Java/Spring Boot backend services alongside the React UI.",
     ],
   },
   {
-    date: "October 2022 – October 2023",
+    date: "Oct 2022 – Oct 2023",
     location: "Santo Domingo, Dominican Republic · Hybrid",
     title: "Software Developer",
     company: "BotPro S.R.L",
@@ -60,7 +61,7 @@ const EXPERIENCE = [
 ];
 ---
 
-<ol class="relative mt-16">
+<ol class="space-y-14">
   {
     EXPERIENCE.map((item) => (
       <li>

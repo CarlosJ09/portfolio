@@ -2,105 +2,28 @@
 import ThemeToggle from "./ThemeToggle.astro";
 
 const navItems = [
-  {
-    title: "Projects",
-    label: "projects",
-    url: "/#projects",
-  },
-  {
-    title: "Experience",
-    label: "experience",
-    url: "/#experience",
-  },
-  {
-    title: "Skills",
-    label: "skills",
-    url: "/#skills",
-  },
-  {
-    title: "Education",
-    label: "education",
-    url: "/#education",
-  },
-  {
-    title: "About me",
-    label: "about me",
-    url: "/#about-me",
-  },
+  { title: "Projects", url: "/#projects" },
+  { title: "Experience", url: "/#experience" },
+  { title: "Skills", url: "/#skills" },
+  { title: "Education", url: "/#education" },
+  { title: "About", url: "/#about-me" },
 ];
 ---
 
-<header class="fixed top-0 z-10 flex items-center justify-center w-full mx-auto mt-2">
-  <nav
-    class="flex px-3 text-sm font-medium rounded-full text-gray-600 dark:text-gray-200 justify-center items-center"
-  >
-    {
-      navItems.map((link) => (
-        <a
-          class="relative block px-2 py-2 transition hover:text-emerald-500 dark:hover:text-emerald-400"
-          aria-label={link.label}
-          href={link.url}
-        >
-          {link.title}
-        </a>
-      ))
-    }
-    <ThemeToggle />
-  </nav>
-</header>
-
-<script>
-  document.addEventListener("astro:page-load", () => {
-    const sections = document.querySelectorAll("section");
-    const navItems = document.querySelectorAll("header nav a");
-
-    const callback = (entries: any[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          navItems.forEach((item) => {
-            if (item.getAttribute("aria-label") == entry.target.id) {
-              item.classList.add("text-emerald-500");
-            } else {
-              item.classList.remove("text-emerald-500");
-            }
-          });
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(callback, {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.3,
-    });
-
-    sections.forEach((section) => {
-      observer.observe(section);
-    });
-
-    // Cleanup function
-    document.onvisibilitychange = () => {
-      if (document.visibilityState === "hidden") {
-        observer.disconnect();
-      } else {
-        sections.forEach((section) => {
-          observer.observe(section);
-        });
+<header
+  class="mx-auto w-full max-w-page px-5 sm:px-8 pt-8 pb-4 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-3 font-mono text-xs"
+>
+  <a href="/" class="uppercase tracking-[0.18em] text-ink hover:text-accent">Carlos Jiménez</a>
+  <div class="flex flex-wrap items-baseline gap-x-6 gap-y-2">
+    <nav aria-label="Sections" class="flex flex-wrap gap-x-4 gap-y-1">
+      {
+        navItems.map((link) => (
+          <a class="text-muted hover:text-accent" href={link.url}>
+            {link.title}
+          </a>
+        ))
       }
-    };
-  });
-</script>
-
-<style>
-  nav {
-    animation: nav-shadown 1s linear both;
-    animation-timeline: scroll();
-    animation-range: 0 100px;
-  }
-
-  @keyframes nav-shadown {
-    to {
-      @apply shadow-lg ring-1 backdrop-blur dark:bg-gray-800/90 bg-white/50 ring-white/10;
-    }
-  }
-</style>
+    </nav>
+    <ThemeToggle />
+  </div>
+</header>

@@ -4,9 +4,20 @@ export default {
   darkMode: "class",
   theme: {
     extend: {
+      // Values live as RGB channels in src/layouts/Layout.astro (:root and .dark).
       colors: {
-        primary: "",
-        secondary: "",
+        paper: "rgb(var(--paper) / <alpha-value>)",
+        ink: "rgb(var(--ink) / <alpha-value>)",
+        muted: "rgb(var(--muted) / <alpha-value>)",
+        rule: "rgb(var(--rule) / <alpha-value>)",
+        accent: "rgb(var(--accent) / <alpha-value>)",
+      },
+      fontFamily: {
+        serif: ['"Source Serif 4 Variable"', "Georgia", "Cambria", "serif"],
+        mono: ['"JetBrains Mono Variable"', "ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
+      },
+      maxWidth: {
+        page: "48rem",
       },
     },
   },

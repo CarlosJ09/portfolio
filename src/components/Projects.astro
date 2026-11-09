@@ -1,8 +1,4 @@
 ---
-import GitHub from "./icons/GitHub.astro";
-import Link from "./icons/Link.astro";
-import LinkButton from "./LinkButton.astro";
-
 // Every number here must come verbatim from the vendor-vetting README or eval-results/.
 const FEATURED = {
   title: "vendor-vetting",
@@ -54,78 +50,69 @@ const OTHER = [
 ];
 ---
 
-<div class="flex flex-col gap-y-16">
-  <article class="[&_em]:not-italic [&_em]:font-mono">
-    <p class="text-sm font-mono text-emerald-600 dark:text-emerald-300">{FEATURED.kicker}</p>
-    <h3 class="mt-1 text-2xl font-bold text-gray-800 dark:text-gray-100">{FEATURED.title}</h3>
-    <p class="mt-3 text-gray-700 dark:text-gray-300 text-pretty">{FEATURED.description}</p>
+<div class="space-y-20">
+  <article>
+    <p class="font-mono text-xs uppercase tracking-[0.18em] text-accent">{FEATURED.kicker}</p>
+    <h3 class="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight">{FEATURED.title}</h3>
+    <p class="mt-4 text-pretty">{FEATURED.description}</p>
 
-    <blockquote class="mt-6 pl-4 border-l-2 border-emerald-500">
-      <p class="text-lg font-semibold text-gray-800 dark:text-gray-100">{FEATURED.principle}</p>
-      <p class="mt-1 text-gray-700 dark:text-gray-300">{FEATURED.principleDetail}</p>
+    <blockquote class="my-10 border-l-2 border-accent pl-6">
+      <p class="text-2xl sm:text-3xl italic leading-snug">{FEATURED.principle}</p>
+      <p class="mt-3 text-muted text-pretty">{FEATURED.principleDetail}</p>
     </blockquote>
 
-    <dl class="grid gap-6 mt-8 sm:grid-cols-2">
+    <dl class="border-t border-rule [&_em]:not-italic [&_em]:font-mono [&_em]:text-[0.85em]">
       {
         FEATURED.findings.map(({ stat, text }) => (
-          <div>
-            <dt class="font-mono text-2xl text-gray-800 dark:text-gray-100">{stat}</dt>
-            <dd class="mt-1 text-gray-700 dark:text-gray-400" set:html={text} />
+          <div class="grid grid-cols-[5.5rem_1fr] sm:grid-cols-[7rem_1fr] gap-x-4 border-b border-rule py-4">
+            <dt class="font-mono text-lg sm:text-xl tabular-nums text-accent">{stat}</dt>
+            <dd class="text-pretty" set:html={text} />
           </div>
         ))
       }
     </dl>
 
-    <footer class="flex items-end justify-start mt-8 gap-x-4">
-      <LinkButton href={FEATURED.github}>
-        <GitHub class="size-6" />
-        Code
-      </LinkButton>
-      <LinkButton href={FEATURED.link}>
-        <Link class="size-4" />
-        Live demo
-      </LinkButton>
-    </footer>
+    <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 font-mono text-sm">
+      <li>
+        <a class="link" href={FEATURED.github} target="_blank" rel="noopener noreferrer">Code ↗</a>
+      </li>
+      <li>
+        <a class="link" href={FEATURED.link} target="_blank" rel="noopener noreferrer">Live demo ↗</a>
+      </li>
+    </ul>
   </article>
 
   {
     PROJECTS.map(({ image, imageAlt, title, description, link }) => (
-      <article class="flex flex-col space-x-0 space-y-8 group md:flex-row md:space-x-8 md:space-y-0">
-        <div class="w-full md:w-1/2">
-          <div class="relative flex flex-col items-center gap-8 transition duration-500 ease-in-out transform shadow-xl overflow-clip rounded-xl md:group-hover:-translate-y-1 md:group-hover:shadow-2xl lg:border lg:border-gray-800 lg:hover:border-gray-700">
-            <img
-              alt={imageAlt}
-              class="object-cover object-top w-full h-56 min-h-56 transition duration-500 sm:h-full md:scale-110 md:group-hover:scale-105"
-              loading="lazy"
-              src={image}
-            />
-          </div>
-        </div>
-
-        <div class="w-full md:w-1/2">
-          <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-100">{title}</h3>
-          <p class="mt-2 text-gray-700 dark:text-gray-400">{description}</p>
-          <footer class="flex items-end justify-start mt-4 gap-x-4">
-            <LinkButton href={link}>
-              <Link class="size-4" />
-              Visit site
-            </LinkButton>
-          </footer>
-        </div>
+      <article>
+        <h3 class="text-2xl font-semibold tracking-tight">{title}</h3>
+        <p class="mt-3 text-pretty">{description}</p>
+        <p class="mt-4 font-mono text-sm">
+          <a class="link" href={link} target="_blank" rel="noopener noreferrer">
+            Visit site ↗
+          </a>
+        </p>
+        <figure class="mt-8">
+          <img
+            alt={imageAlt}
+            class="w-full aspect-[16/10] object-cover object-top border border-rule"
+            loading="lazy"
+            src={image}
+            width="2219"
+            height="1309"
+          />
+        </figure>
       </article>
     ))
   }
 
   <div>
-    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Other</h3>
-    <ul class="mt-2 space-y-1 text-gray-700 dark:text-gray-400">
+    <h3 class="font-mono text-xs uppercase tracking-[0.18em] text-muted">Other</h3>
+    <ul class="mt-4 space-y-2">
       {
         OTHER.map(({ title, description, github }) => (
           <li>
-            <a class="font-medium underline" href={github} target="_blank" rel="noopener">
-              {title}
-            </a>
-            : {description}
+            <a class="link" href={github} target="_blank" rel="noopener noreferrer">{title} ↗</a><span class="text-muted">: {description}</span>
           </li>
         ))
       }

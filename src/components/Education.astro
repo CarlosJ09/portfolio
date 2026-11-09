@@ -1,5 +1,5 @@
 ---
-import EducationItem from "./EducationItem.astro";
+import ExperienceItem from "./ExperienceItem.astro";
 
 const EDUCATION = [
   {
@@ -10,11 +10,11 @@ const EDUCATION = [
 ];
 ---
 
-<ol class="relative mt-16">
+<ol class="space-y-14">
   {
-    EDUCATION.map((edu) => (
+    EDUCATION.map(({ institution, degree, date }) => (
       <li>
-        <EducationItem {...edu} />
+        <ExperienceItem company={institution} title={degree} date={date} />
       </li>
     ))
   }

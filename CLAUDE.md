@@ -91,7 +91,7 @@ What he has said he did (describe generically, no internal product names):
 - (The RAG work was at BotPro, not Thryv. See below.)
 
 ### SIGEF — Ministerio de Hacienda y Economía (consulting) — November 2025 – November 2026
-Title: **Frontend Consultant (Contract)**.
+Title: **IDB Consultant · Frontend Developer (Contract)** (Spanish: "Consultor BID - Desarrollador Frontend").
 This entry is **new**: it isn't on the current site. It's a national government financial
 management system.
 - Codebase: **Nuxt 3, Vue 3, TypeScript, PrimeVue, Keycloak**.
@@ -105,7 +105,9 @@ management system.
 - Currently on the team that maintains the system in production (finds and fixes bugs). Don't
   call it "sustainability team" in English copy.
 
-Do **not** mention contract value, the financing program, or any person's name.
+It is an **IDB (BID) consultancy**: part of a financial-transparency program funded by the
+Inter-American Development Bank. Carlos approved naming the IDB (2026-11-09). Do **not** mention
+contract value or any person's name.
 
 ### Dominicana Compañía de Seguros — Oct 2023 – Aug 2025 (frontend, then full-stack)
 - The current copy claims "enhancing user engagement by 30%". `TODO(carlos)`: is that a measured

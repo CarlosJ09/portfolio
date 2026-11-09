@@ -1,21 +1,24 @@
 ---
+import { LINKS } from "@/consts";
+
 const currentYear = new Date().getFullYear();
 ---
 
-<footer
-  class="opacity-80 m-4 mt-16 w-full mx-auto container lg:max-w-4xl md:max-w-2xl mb-10 flex justify-center"
->
+<footer class="mx-auto w-full max-w-page px-5 sm:px-8 mt-24 mb-12">
   <div
-    class="rounded-lg w-full max-w-screen-xl mx-auto md:flex md:items-center md:justify-between py-4"
+    class="border-t border-rule pt-6 flex flex-wrap justify-between gap-x-8 gap-y-3 font-mono text-xs text-muted"
   >
-    <span class="text-sm sm:text-center text-zinc-800/90 dark:text-zinc-200/90"
-      >© <span id="footer-year">{currentYear}</span>
-      <a href="https://github.com/CarlosJ09" target="_blank" rel="noopener noreferrer" class="hover:underline">CarlosJ09</a>. All rights
-      reserved.
-    </span>
-    <ul class="flex flex-wrap items-center mt-3 text-sm font-medium dark:text-white/90 sm:mt-0">
+    <span>© <span id="footer-year">{currentYear}</span> Carlos Jiménez</span>
+    <ul class="flex flex-wrap gap-x-4">
+      <li><a class="hover:text-accent" href={LINKS.email}>Email</a></li>
       <li>
-        <a id="contacto" href="mailto:carlos.ml.jimenezz@gmail.com" class="hover:underline">Email</a
+        <a class="hover:text-accent" href={LINKS.linkedin} target="_blank" rel="noopener noreferrer"
+          >LinkedIn ↗</a
+        >
+      </li>
+      <li>
+        <a class="hover:text-accent" href={LINKS.github} target="_blank" rel="noopener noreferrer"
+          >GitHub ↗</a
         >
       </li>
     </ul>
@@ -23,5 +26,8 @@ const currentYear = new Date().getFullYear();
 </footer>
 
 <script>
-  document.getElementById("footer-year")!.textContent = new Date().getFullYear().toString();
+  document.addEventListener("astro:page-load", () => {
+    const el = document.getElementById("footer-year");
+    if (el) el.textContent = new Date().getFullYear().toString();
+  });
 </script>
