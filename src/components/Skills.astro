@@ -1,94 +1,32 @@
 ---
-const skillCategories = [
+// From CLAUDE.md §6. Carlos approved it as-is on 2026-11-09; to be refined later.
+const GROUPS = [
   {
-    title: "Frontend",
-    icon: "💻",
-    skills: [
-      "HTML",
-      "CSS",
-      "JavaScript",
-      "React",
-      "React Native",
-      "NextJS",
-      "VueJS",
-      "Tailwind",
-      "Bootstrap",
-    ],
+    title: "Daily",
+    skills: ["TypeScript", "Vue 3 / Nuxt", "Node.js / NestJS", "PostgreSQL", "AWS"],
   },
   {
-    title: "Backend",
-    icon: "⚙️",
-    skills: ["Java", "Spring Boot", "Python", "FastAPI", "Django", "NodeJS", "ExpressJS"],
+    title: "AI / LLM",
+    skills: ["Amazon Bedrock", "RAG", "LLM evaluation", "Local inference (Ollama)"],
   },
   {
-    title: "Tests",
-    icon: "🧪",
-    skills: ["Jest", "Vitest", "Supertest", "JUnit", "Spring Test"],
-  },
-  {
-    title: "Databases",
-    icon: "🗄️",
-    skills: ["Oracle Database", "PL/SQL", "MySQL", "PostgreSQL", "MongoDB", "Pinecone"],
-  },
-  {
-    title: "Tools & Platforms",
-    icon: "🛠️",
-    skills: [
-      "AWS",
-      "Git",
-      "GitHub",
-      "GitHub Actions",
-      "Jira",
-      "Bitbucket",
-      "Bitbucket Pipelines",
-      "Jupyter Notebook",
-    ],
+    title: "Also shipped with",
+    skills: ["React / Next.js", "Python (FastAPI, Django)", "Java / Spring Boot"],
   },
   {
     title: "Languages",
-    icon: "🌐",
-    skills: ["Spanish (Native)", "English (Professional Proficiency)"],
+    skills: ["Spanish (native)", "English (professional)"],
   },
 ];
 ---
 
-<section class="py-8">
-  <div class="space-y-8">
-    {
-      skillCategories.map((category) => (
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700">
-          <div class="flex items-center mb-4">
-            <span class="text-3xl mr-3">{category.icon}</span>
-            <h3 class="text-xl font-bold text-emerald-500 dark:text-emerald-100">
-              {category.title}
-            </h3>
-          </div>
-          <div class="flex flex-wrap gap-2">
-            {category.skills.map((skill) => (
-              <span class="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full">
-                {skill}
-              </span>
-            ))}
-          </div>
-        </div>
-      ))
-    }
-  </div>
-</section>
-
-<style>
-  /* Add a subtle animation to the progress bars when they come into view */
-  @keyframes progressAnimation {
-    from {
-      width: 0;
-    }
-    to {
-      width: var(--target-width);
-    }
+<dl class="grid gap-6 sm:grid-cols-[12rem_1fr]">
+  {
+    GROUPS.map(({ title, skills }) => (
+      <>
+        <dt class="font-semibold text-gray-800 dark:text-gray-100">{title}</dt>
+        <dd class="-mt-4 sm:mt-0 text-gray-700 dark:text-gray-300">{skills.join(" · ")}</dd>
+      </>
+    ))
   }
-
-  .bg-emerald-500,
-  .bg-emerald-100 {
-    animation: progressAnimation 1.5s ease-out forwards;
-  }
-</style>
+</dl>

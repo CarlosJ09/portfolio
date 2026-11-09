@@ -1,43 +1,70 @@
 ---
 import ExperienceItem from "./ExperienceItem.astro";
 
-const EXPERIENCIE = [
+// Confidentiality: the only client/product names allowed are Thryv, Dominicana Compañía de
+// Seguros, BotPro S.R.L, and SIGEF / Ministerio de Hacienda y Economía. Describe internal Thryv
+// products generically. Never mention the program that finances the SIGEF engagement.
+
+const EXPERIENCE = [
   {
-    date: "August 2025 - Present",
-    title: "Frontend Developer",
+    date: "August 2025 – Present",
+    location: "Dallas, Texas, USA · Remote",
+    title: "Full-Stack Engineer · AI & Cloud",
     company: "Thryv",
-    description:
-      "Developing and maintaining modern, scalable web interfaces for Thryv's business management SaaS platform using React and TypeScript. Collaborating cross-functionally with design and backend teams to ship high-quality features that serve thousands of small businesses.",
+    summary:
+      "Small-business SaaS. I work across Vue 3 and React frontends, the services behind them, and AWS. My day-to-day work is in English.",
+    highlights: [
+      "With my team, built an AI-powered insights feature end to end on Amazon Bedrock. It gives partners recommendations based on their customer data. I worked on the new NestJS/TypeScript microservice, its AWS infrastructure, and the Vue 3 + Pinia frontend.",
+      "Work on a lead-generation product made of a frontend, a BFF, an alerts service, and an analytics service with a semantic layer (Cube) over Snowflake and BigQuery.",
+      "When we extracted an app from the monolith into its own project, I led the decision to stay on Vue instead of migrating to React, and reused the existing Auth0 tenant by adding a new application instead of setting up auth from scratch.",
+      "Onboard and mentor new engineers on the project: architecture, business domain, how we work, pairing, and code review.",
+    ],
   },
   {
-    date: "February 2025 - August 2025",
-    title: "Full Stack Developer",
-    company: "Dominicana Compañia de Seguros",
-    description:
-      "Developed and maintained robust and scalable backend services using Java with Spring Boot, ensuring high performance and stability in production environments. Developed responsive and dynamic user interfaces using React, ensuring smooth and intuitive user experiences across devices.",
+    date: "November 2025 – November 2026",
+    location: "Santo Domingo, Dominican Republic · Remote",
+    title: "Frontend Consultant (Contract)",
+    company: "SIGEF · Ministerio de Hacienda y Economía",
+    summary:
+      "The Dominican government's national financial management system. Nuxt 3, Vue 3, TypeScript, PrimeVue, Keycloak.",
+    highlights: [
+      "Wrote the pre-refactoring analysis of the frontend service layer: 27 service files, ~222 uses of <code>any</code>, zero test files.",
+      "Designed and rolled out a shared composable, <code>useSigefResource</code>, to replace the per-module web-service classes. It's backward compatible, so modules still on the old classes keep working.",
+      "Consolidated unused backend classes under a single service, with sign-off from the product owners and architects.",
+      "Stabilized modules after a major branch integration: restored pre-integration behavior across the classifiers module, and took on a module that was fully non-functional.",
+      "Now on the team that maintains the system in production: tracking down bugs and shipping the fixes.",
+    ],
   },
   {
-    date: "October 2023 - February 2025",
-    title: "Frontend Developer",
-    company: "Dominicana Compañia de Seguros",
-    description:
-      "Created responsive UI components for a client-facing insurance portal using React.js and Redux, enhancing user engagement by 30% and improving customer satisfaction scores through seamless navigation and improved accessibility. Implementing testing frameworks such as Vitest and Jest. Adapting web applications for mobile platforms using React Native and Expo.",
+    date: "October 2023 – August 2025",
+    location: "Santo Domingo, Dominican Republic · On-site",
+    title: "Frontend → Full-Stack Developer",
+    company: "Dominicana Compañía de Seguros",
+    highlights: [
+      'Built the company\'s main public website from scratch: <a class="underline" href="https://dominicanadeseguros.com/site" target="_blank" rel="noopener">dominicanadeseguros.com</a>. I chose the framework and stack (Next.js, Tailwind), set up the site\'s structure, wrote part of the content, and was responsible for performance and accessibility.',
+      "Built UI for the client-facing insurance portal in React and Redux, improving user engagement by 30%, and wrote tests with Vitest and Jest.",
+      "Adapted web applications for mobile with React Native and Expo.",
+      "Moved to full-stack in February 2025, building Java/Spring Boot backend services alongside the React UI.",
+    ],
   },
   {
-    date: "October 2022 - October 2023",
+    date: "October 2022 – October 2023",
+    location: "Santo Domingo, Dominican Republic · Hybrid",
     title: "Software Developer",
     company: "BotPro S.R.L",
-    description:
-      "Designed and developed chatbot automation solutions using Node.js. Built scalable backend services with Express and Prisma. Created intuitive, responsive UI components using React.js and TypeScript. Managed database operations with MySQL and MongoDB.",
+    highlights: [
+      "Built a RAG chatbot workflow in Python with FastAPI, LangChain, Pinecone, and the OpenAI API.",
+      "Built chatbot automation in Node.js, with Express + Prisma backends, React/TypeScript frontends, and MySQL and MongoDB.",
+    ],
   },
 ];
 ---
 
 <ol class="relative mt-16">
   {
-    EXPERIENCIE.map((experiencie) => (
-      <li class="">
-        <ExperienceItem {...experiencie} />
+    EXPERIENCE.map((item) => (
+      <li>
+        <ExperienceItem {...item} />
       </li>
     ))
   }

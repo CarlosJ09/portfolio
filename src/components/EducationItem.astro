@@ -20,7 +20,11 @@ const { institution, degree, date, description } = Astro.props;
       <time class="p-0 m-0 text-sm text-gray-600/80 dark:text-white/80">{date}</time>
     </div>
   </div>
-  <div class="relative flex flex-col gap-2 pb-4 text-gray-600 dark:text-gray-300 md:col-span-3">
-    {description}
-  </div>
+  {
+    description && (
+      <div class="relative flex flex-col gap-2 pb-4 text-gray-600 dark:text-gray-300 md:col-span-3">
+        {description}
+      </div>
+    )
+  }
 </div>

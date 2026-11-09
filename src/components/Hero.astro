@@ -5,13 +5,11 @@ import MailIcon from "@/components/icons/Mail.astro";
 import SocialPill from "@/components/SocialPill.astro";
 import GitHub from "./icons/GitHub.astro";
 import { getYearsOfExperience } from "@/consts";
-
-const personalImageAlt = "Carlos Jiménez";
 ---
 
 <div class="max-w-xl">
   <div class="flex gap-4 mb-4">
-    <img class="rounded-full shadow-lg size-16" src="/me.JPG" alt={personalImageAlt} />
+    <img class="rounded-full shadow-lg size-16" src="/me.JPG" alt="Carlos Jiménez" />
     <a
       href="https://www.linkedin.com/in/carlos-jimenezz"
       target="_blank"
@@ -21,17 +19,26 @@ const personalImageAlt = "Carlos Jiménez";
       <Badge>Open to work</Badge>
     </a>
   </div>
-  <h1
-    class="md:w-screen text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl dark:text-white"
-  >
-    Hey, I'm <span id="typing-text" class="relative"></span>
+
+  <h1 class="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl dark:text-white">
+    Carlos Jiménez
   </h1>
-  <p
-    class="mt-6 text-xl text-gray-800 dark:[&>strong]:text-emerald-200 [&>strong]:text-emerald-500 [&>strong]:font-semibold dark:text-gray-300"
-  >
-    +<span id="years-exp">{getYearsOfExperience()}</span> years of experience. <strong>Systems Engineer and Software Developer</strong> from Santo Domingo,
-    DR 🇩🇴. Specialized in Web Development.
+
+  <p class="mt-4 text-2xl font-semibold text-gray-800 dark:text-gray-100">
+    Full-stack engineer who builds AI features with LLMs.
   </p>
+
+  <p class="mt-6 text-lg text-gray-700 dark:text-gray-300 text-pretty">
+    <span id="years-exp">{getYearsOfExperience()}</span>+ years shipping TypeScript across the
+    stack: Vue 3 and React, NestJS, AWS. I put LLMs where they're good at reading, and I write
+    the code that decides. When the system isn't sure, I'd rather it say <em>needs review</em> than
+    guess.
+  </p>
+
+  <p class="mt-4 text-gray-600 dark:text-gray-400">
+    Currently at Thryv. Based in Santo Domingo, Dominican Republic.
+  </p>
+
   <nav class="flex flex-wrap gap-4 mt-8">
     <SocialPill href="mailto:carlos.ml.jimenezz@gmail.com">
       <MailIcon class="size-4" />
@@ -43,76 +50,15 @@ const personalImageAlt = "Carlos Jiménez";
     </SocialPill>
     <SocialPill href="https://github.com/CarlosJ09">
       <GitHub class="size-4" />
-      Github
+      GitHub
     </SocialPill>
   </nav>
 </div>
 
-<style>
-  #typing-text::after {
-    content: "|";
-    position: absolute;
-    right: -8px;
-    width: 8px;
-    animation: blink 0.75s step-end infinite;
-  }
-
-  @keyframes blink {
-    from,
-    to {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0;
-    }
-  }
-</style>
-
 <script>
   import { getYearsOfExperience } from "@/consts";
 
-  const phrases = ["Carlos Jiménez", "a Software Developer", "a Full Stack Engineer"];
-
-  const typingText = document.getElementById("typing-text");
-  let phraseIndex = 0;
-  let charIndex = 0;
-  let isDeleting = false;
-  let typingDelay = 100;
-  const deletingDelay = 50;
-  const pauseDelay = 4000;
-
-  function typeText() {
-    const currentPhrase = phrases[phraseIndex];
-
-    if (isDeleting) {
-      if (typingText) {
-        typingText.textContent = currentPhrase.substring(0, charIndex - 1);
-        charIndex--;
-      }
-
-      typingDelay = deletingDelay;
-    } else {
-      if (typingText) {
-        typingText.textContent = currentPhrase.substring(0, charIndex + 1);
-        charIndex++;
-      }
-
-      typingDelay = 100;
-    }
-
-    if (!isDeleting && charIndex === currentPhrase.length) {
-      typingDelay = pauseDelay;
-      isDeleting = true;
-    } else if (isDeleting && charIndex === 0) {
-      isDeleting = false;
-      phraseIndex = (phraseIndex + 1) % phrases.length;
-    }
-
-    setTimeout(typeText, typingDelay);
-  }
-
   document.addEventListener("astro:page-load", () => {
-    setTimeout(typeText, typingDelay);
     const yearsSpan = document.getElementById("years-exp");
     if (yearsSpan) {
       yearsSpan.textContent = getYearsOfExperience().toString();

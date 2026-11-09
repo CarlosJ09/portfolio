@@ -1,52 +1,30 @@
 ---
 import { getYearsOfExperience } from "@/consts";
-
-const programmingLangs = [
-  { src: "languages/typescript.png", alt: "TypeScript" },
-  { src: "languages/react.png", alt: "React" },
-  { src: "languages/python.png", alt: "Python" },
-  { src: "languages/nodejs.png", alt: "Node.js" },
-];
 ---
 
-<article
-  class="flex flex-col items-center justify-center gap-8 text-gray-700 dark:text-gray-300 md:flex-row"
->
-  <div
-    class="[&>p]:mb-4 [&>p>strong]:text-emerald-500 dark:[&>p>strong]:text-emerald-100 [&>p>strong]:font-normal [&>p>strong]:font-mono text-pretty"
-  >
-    <p>
-      My name is Carlos Jiménez, a <strong>Systems Engineer</strong> graduated from the Instituto
-      Tecnológico de Santo Domingo (INTEC), with over <strong
-        ><span id="years-exp-about">{getYearsOfExperience()}</span> years of professional experience</strong
-      > building scalable and high-performance web applications across the full stack.
-    </p>
+<article class="max-w-2xl space-y-4 text-gray-700 dark:text-gray-300 text-pretty">
+  <p>
+    I'm a full-stack engineer in Santo Domingo with <span id="years-exp-about"
+      >{getYearsOfExperience()}</span
+    >+ years of professional experience. Most of my work is TypeScript: Vue 3 and React on the
+    front, Node.js and NestJS behind them, AWS underneath. More and more of it involves LLMs, and that has
+    taught me as much about where not to use a model as where to use one.
+  </p>
 
-    <p>
-      I am deeply passionate about <strong>technology and innovation</strong>, and I thrive in
-      collaborative environments where I can apply my expertise while continuously growing. I enjoy
-      transforming complex problems into clean, efficient, and maintainable solutions.
-    </p>
+  <p>
+    My rule is that the model reads and the code decides. A bug in date arithmetic can be found
+    and fixed. A model that decided a document was "expired" for reasons it can't show you can't
+    be. I also don't trust a model's confidence score until I've measured it. In my own pipeline
+    it was 1.00 on every field, including the one it got wrong.
+  </p>
 
-    <p>
-      Throughout my career I have worked with a wide range of technologies — from responsive
-      frontends with <strong>React and Next.js</strong> to robust backend services with
-      <strong>Java Spring Boot, Python, and Node.js</strong>. I am always exploring new tools and
-      frameworks to stay at the forefront of the industry.
-    </p>
-  </div>
-
-  <div class="grid grid-cols-2 gap-8 w-40 md:w-96 md:mb-10">
-    {
-      programmingLangs.map((lang) => (
-        <img
-          class="transition-all duration-300 hover:scale-110 hover:rotate-6 shadow-md"
-          src={lang.src}
-          alt={lang.alt}
-        />
-      ))
-    }
-  </div>
+  <p>
+    A lot of my time goes into code other people wrote. Before refactoring a government system's
+    frontend service layer, I measured it first: 27 service files, ~222 uses of <code
+      class="font-mono text-sm">any</code
+    >, no tests. Then I replaced the pattern without breaking the modules that still used the old
+    one. I also onboard and mentor the engineers who join my project at Thryv.
+  </p>
 </article>
 
 <script>
