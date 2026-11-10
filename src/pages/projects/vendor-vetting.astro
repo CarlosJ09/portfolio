@@ -256,6 +256,11 @@ const RESULTS_ROWS = [
         confidence exactly 1.00</strong>. Minimum 1.00, maximum 1.00, zero variance. The one
         extraction error the pipeline ever made also came back at 1.00.
       </p>
+      <p class="font-mono text-xs text-muted">
+        That error was in the run before the fix described next. Its results file no longer exists:
+        files were named by date and model, so a second run the same day overwrote it. The published
+        report shows only the post-fix run. Filenames now carry the minute.
+      </p>
       <p>
         So the threshold, the review queue and the <code>needs_review</code> status are built,
         tested and wired end to end, and on this model the signal that drives them is a constant. The
@@ -314,11 +319,6 @@ const RESULTS_ROWS = [
           <strong>Measure a hosted model against the same eval.</strong> A model with real logprobs is
           the first thing to compare, because it could give the confidence signal some meaning. The
           provider interface makes this a comparison, not a rewrite.
-        </li>
-        <li class="dash">
-          <strong>Run it on real documents.</strong> The synthetic corpus proves the pipeline, not
-          the reading. Real intake brings scanner artifacts, phrasings and layouts I didn't
-          anticipate.
         </li>
         <li class="dash">
           <strong>Evidence regions for scans.</strong> Literal PDF fields are located 522 of 522; scanned
