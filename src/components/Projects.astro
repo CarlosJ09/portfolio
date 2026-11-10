@@ -1,5 +1,7 @@
 ---
+import { Image } from "astro:assets";
 import Button from "./Button.astro";
+import dominicanaImage from "@/assets/dominicana.png";
 import GitHubIcon from "./icons/GitHub.astro";
 
 // Every number here must come verbatim from the vendor-vetting README or eval-results/.
@@ -40,7 +42,7 @@ const PROJECTS = [
     description:
       "The insurer's main public website, a production site I built from scratch. I chose the framework and stack (Next.js, Tailwind), set up the site's structure, wrote part of the content, and was responsible for performance and accessibility.",
     link: "https://dominicanadeseguros.com/site",
-    image: "/projects/dominicana.png",
+    image: dominicanaImage,
     imageAlt: "Dominicana de Seguros website home page",
   },
 ];
@@ -97,13 +99,14 @@ const OTHER = [
           <Button href={link} external>Visit site</Button>
         </div>
         <figure class="mt-8">
-          <img
+          <Image
             alt={imageAlt}
             class="w-full aspect-[16/10] object-cover object-top border border-rule"
-            loading="lazy"
             src={image}
-            width="2219"
-            height="1309"
+            widths={[704, 1408]}
+            sizes="(min-width: 768px) 704px, 100vw"
+            format="webp"
+            quality={80}
           />
         </figure>
       </article>

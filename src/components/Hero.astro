@@ -1,5 +1,7 @@
 ---
+import { Image } from "astro:assets";
 import Button from "@/components/Button.astro";
+import me from "@/assets/me.jpg";
 import GitHubIcon from "@/components/icons/GitHub.astro";
 import LinkedInIcon from "@/components/icons/LinkedIn.astro";
 import MailIcon from "@/components/icons/Mail.astro";
@@ -8,12 +10,14 @@ import { getYearsOfExperience, LINKS } from "@/consts";
 
 <div class="max-w-2xl">
   <div class="flex items-center gap-4 mb-10">
-    <img
+    <Image
       class="size-14 rounded-full object-cover ring-1 ring-rule"
-      src="/me.JPG"
+      src={me}
       alt="Carlos Jiménez"
-      width="56"
-      height="56"
+      width={112}
+      height={112}
+      densities={[1]}
+      loading="eager"
     />
     <a
       href={LINKS.linkedin}
